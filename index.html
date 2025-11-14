@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>花路·珍重 - 音乐专辑</title>
+  <!-- Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- GSAP 动画库 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- 统一的 Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            secondary: '#8b5cf6',
+            dark: '#0f172a',
+            'dark-light': '#1e293b',
+            'text-primary': '#f8fafc',
+            'text-secondary': '#94a3b8'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+      }
+      .glass {
+        @apply bg-white/10 backdrop-blur-md border border-white/20;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .audio-wave {
+        position: relative;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .audio-wave span {
+        display: block;
+        width: 3px;
+        margin: 0 2px;
+        background-color: theme('colors.primary');
+        animation: wave 1.2s linear infinite;
+      }
+      @keyframes wave {
+        0%, 100% {
+          height: 10px;
+        }
+        50% {
+          height: 40px;
+        }
+      }
+      .audio-wave span:nth-child(2n) {
+        animation-delay: 0.2s;
+      }
+      .audio-wave span:nth-child(3n) {
+        animation-delay: 0.4s;
+      }
+      .audio-wave span:nth-child(4n) {
+        animation-delay: 0.6s;
+      }
+      .audio-wave span:nth-child(5n) {
+        animation-delay: 0.8s;
+      }
+      .lyric-highlight {
+        @apply text-primary scale-105 transition-all duration-300;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark text-text-primary min-h-screen flex flex-col">
+  <!-- 导航栏 -->
+  <nav class="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center space-x-2">
+      <i class="fa fa-music text-primary text-2xl"></i>
+      <h1 class="text-xl font-bold">花路·珍重</h1>
+    </div>
+    <div class="hidden md:flex space-x-8">
+      <a href="#album" class="hover:text-primary transition-colors">专辑</a>
+      <a href="#tracks" class="hover:text-primary transition-colors">曲目</a>
+      <a href="#lyrics" class="hover:text-primary transition-colors">歌词</a>
+      <a href="#photos" class="hover:text-primary transition-colors">照片墙</a>
+    </div>
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="text-text-primary hover:text-primary">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </nav>
+  
+  <!-- 移动端菜单 -->
+  <div id="mobile-menu" class="fixed inset-0 bg-dark z-40 transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="flex justify-end p-6">
+      <button id="close-menu-button" class="text-text-primary hover:text-primary">
+        <i class="fa fa-times text-2xl"></i>
+      </button>
+    </div>
+    <div class="flex flex-col items-center space-y-8 mt-16">
+      <a href="#album" class="text-xl hover:text-primary transition-colors">专辑</a>
+      <a href="#tracks" class="text-xl hover:text-primary transition-colors">曲目</a>
+      <a href="#lyrics" class="text-xl hover:text-primary transition-colors">歌词</a>
+      <a href="#photos" class="text-xl hover:text-primary transition-colors">照片墙</a>
+    </div>
+  </div>
+
+  <!-- 主内容区 -->
+  <main class="flex-grow">
+    <!-- 专辑封面区 -->
+    <section id="album" class="py-12 px-6 flex flex-col md:flex-row items-center justify-center gap-12">
+      <div class="relative w-full md:w-1/3 max-w-md">
+        <div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000"></div>
+        <div class="relative bg-dark-light rounded-lg overflow-hidden shadow-xl">
+          <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/0651a6de878f497dbc7fbb7f99299184.png~tplv-a9rns2rl98-24:720:720.png?rcl=202511141505157558AB8CB6BF32DDB4C5&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763708716&x-signature=1kLcOy5hN6qhfkuuHxlJ%2Fk%2BaDAQ%3D" 
+               alt="花路·珍重专辑封面" 
+               class="w-full h-auto object-cover">
+        </div>
+      </div>
+      
+      <div class="w-full md:w-1/3">
+        <h2 class="text-4xl font-bold mb-4">花路·珍重</h2>
+        <p class="text-2xl text-text-secondary mb-8">蔡增仲建築師留聲紀念專輯</p>
+        <p class="text-text-secondary mb-8 leading-relaxed">
+          《花路，珍重》——故事點歌輯
+          <br><br>
+          世間有情，攜風帶雨，煙火清歡，珍惜所有千年一遇。
+          <br><br>
+          自古，人們歌唱、聆曲時腦海中多少閃過幾許人生畫面，原來人走過的路都在身上，氣質涵養見微知著，且笑看隨緣糊塗，或胸藏萬卷山水；有道唱歌唱的是閱歷，何況歌曲確藏情關，紅塵來去不免慨歎。「年少不知曲中意，回首已是曲中人」，人生碰上的歌，也說緣分。
+          <br><br>
+          幾位歌友十餘年來一直沒放棄勸我找時間錄幾首歌留存分享，都說我放感情詮釋歌曲韻味獨到，嘗被誇「被建築師耽誤的歌手」也不過是老交情隨口客氣恭維一句罷了。直到 2024年6月底忽然患病，一度行止失能，緊急住院腦部開刀，震懾之餘，方醒覺人生無常唯恐徒留遺憾，感觸良多。康復後不久舊事重提，萬幸之餘，發覺在事務所辦公室大樓地下一層由吳長來先生/Music音樂大師開設了有齊全設備的錄音室（造韻樂器有限公司)，因緣巧合下遂在他與其公子品璁老師的鼎力協助下，順勢錄製幾首歌，似可再圓個歌手夢。
+          <br><br>
+          吸引人的＂聲線＂是追星秘密，咱年輕到老嗓音數變，察覺高光難再時追悔莫及，卻也不必蹉跎，有啥錄啥就是。很欣悅聽聞大女兒也喜歡歌唱，感恩爸媽傳給我與生俱來的興趣靓點後繼有人。
+          <br><br>
+          《花路，珍重》中"花路"意喻人生坦途，祝願走在灑滿花的康莊大道，從此吉祥康寧一切美好，像婚禮上新人所走紅毯上舖滿花瓣的祝福，或宗教上迎請尊者的崇敬禮拜。但對我而言，花路的意義更廣些，像繞道迴旋緩緩周折，且一路上繁華迭盪，好不精采；＂珍重＂二字與本名諧音梗之趣就不必多言了。俗話中「窮家富路」有其哲理，起跑點即變差了點，路程上處處用心，仍然有可期待到達一定境界的遠方或終點。只不過花甲之齡該取斷、捨、離：有酒當歌昨日雲煙，聲色犬馬快夢一晌，也不枉咱率性洒脫脾氣。
+          <br><br>
+          此專輯純屬偶然中的必然，是我窺見人生中難得糊塗的即興之作。作為贈品、紀念品，係非公開發行販售商品，若聽過後收藏或轉贈朋友分享了，即是物盡其用！感念、感恩。2025年中秋。
+          <br><br>
+          增仲
+        </p>
+        <div class="flex flex-wrap gap-4 mb-8">
+          <span class="px-4 py-2 rounded-full bg-dark-light text-sm">翻唱經典</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button id="play-all" class="px-8 py-3 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center space-x-2 hover:shadow-lg hover:shadow-primary/20 transition-all">
+            <i class="fa fa-play"></i>
+            <span>播放全部</span>
+          </button>
+          <button class="w-12 h-12 rounded-full bg-dark-light flex items-center justify-center hover:bg-primary/20 transition-colors">
+            <i class="fa fa-heart-o"></i>
+          </button>
+          <button class="w-12 h-12 rounded-full bg-dark-light flex items-center justify-center hover:bg-primary/20 transition-colors">
+            <i class="fa fa-share-alt"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 播放器区域 -->
+    <section class="fixed bottom-0 left-0 right-0 glass p-4 z-40">
+      <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-4 w-full md:w-auto">
+          <div id="current-track-cover" class="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
+            <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/0651a6de878f497dbc7fbb7f99299184.png~tplv-a9rns2rl98-24:720:720.png?rcl=202511141505157558AB8CB6BF32DDB4C5&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763708716&x-signature=1kLcOy5hN6qhfkuuHxlJ%2Fk%2BaDAQ%3D" 
+                 alt="花路·珍重专辑封面" 
+                 class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h4 id="current-track-title" class="font-medium">花路·珍重</h4>
+            <p id="current-track-artist" class="text-text-secondary text-sm">蔡增仲建築師留聲紀念專輯</p>
+          </div>
+        </div>
+        
+        <div class="flex-1 flex flex-col items-center">
+          <div class="flex items-center space-x-6 mb-2">
+            <button id="prev-track" class="text-text-primary hover:text-primary transition-colors">
+              <i class="fa fa-step-backward"></i>
+            </button>
+            <button id="play-pause" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center hover:bg-primary/80 transition-colors">
+              <i class="fa fa-play text-white"></i>
+            </button>
+            <button id="next-track" class="text-text-primary hover:text-primary transition-colors">
+              <i class="fa fa-step-forward"></i>
+            </button>
+          </div>
+          <div class="w-full flex items-center space-x-2">
+            <span id="current-time" class="text-text-secondary text-sm">00:00</span>
+            <div class="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden">
+              <div id="progress-bar" class="h-full bg-primary w-0"></div>
+            </div>
+            <span id="total-time" class="text-text-secondary text-sm">03:30</span>
+          </div>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-4 w-full md:w-auto">
+          <button class="text-text-primary hover:text-primary transition-colors">
+            <i class="fa fa-random"></i>
+          </button>
+          <button class="text-text-primary hover:text-primary transition-colors">
+            <i class="fa fa-repeat"></i>
+          </button>
+          <div class="flex items-center space-x-2">
+            <i class="fa fa-volume-up text-text-primary"></i>
+            <div class="w-24 h-1 bg-gray-700 rounded-full overflow-hidden">
+              <div id="volume-bar" class="h-full bg-primary w-3/4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 曲目列表 -->
+    <section id="tracks" class="py-12 px-6">
+      <div class="container mx-auto">
+        <h2 class="text-3xl font-bold mb-8">曲目列表</h2>
+        <div class="bg-dark-light rounded-lg overflow-hidden shadow-lg">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-gray-700">
+                <th class="py-4 px-6 text-left text-text-secondary font-medium">序號</th>
+                <th class="py-4 px-6 text-left text-text-secondary font-medium">曲目</th>
+                <th class="py-4 px-6 text-left text-text-secondary font-medium">藝術家</th>
+                <th class="py-4 px-6 text-right text-text-secondary font-medium">時長</th>
+              </tr>
+            </thead>
+            <tbody id="track-list">
+              <!-- 曲目列表将通过JavaScript动态生成 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 歌词区域 -->
+    <section id="lyrics" class="py-12 px-6">
+      <div class="container mx-auto">
+        <h2 class="text-3xl font-bold mb-8">歌詞</h2>
+        <div class="bg-dark-light rounded-lg overflow-hidden shadow-lg p-6 md:p-10">
+          <div class="flex flex-col md:flex-row gap-8">
+            <div class="w-full md:w-1/3">
+              <div id="lyric-cover" class="rounded-lg overflow-hidden mb-4">
+                <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/0651a6de878f497dbc7fbb7f99299184.png~tplv-a9rns2rl98-24:720:720.png?rcl=202511141505157558AB8CB6BF32DDB4C5&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763708716&x-signature=1kLcOy5hN6qhfkuuHxlJ%2Fk%2BaDAQ%3D" 
+                     alt="当前歌词封面" 
+                     class="w-full h-auto object-cover">
+              </div>
+              <h3 id="lyric-title" class="text-xl font-bold mb-2">序曲 預約我和你</h3>
+              <p id="lyric-artist" class="text-text-secondary mb-4">蔡增仲建築師留聲紀念專輯</p>
+              <div class="audio-wave mb-6">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <p class="text-text-secondary text-sm">
+                選擇上方歌曲，查看對應歌詞。歌詞將隨著音樂播放自動滾動。
+              </p>
+            </div>
+            
+            <div class="w-full md:w-2/3">
+              <div id="lyric-content" class="h-96 overflow-y-auto scrollbar-hide flex items-center justify-center">
+                <div class="text-center space-y-4 text-xl">
+                  <p>序曲 預約我和你</p>
+                  <p>這首歌沒有歌詞</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 照片墙 -->
+    <section id="photos" class="py-12 px-6">
+      <div class="container mx-auto">
+        <h2 class="text-3xl font-bold mb-8">照片墙</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="group relative overflow-hidden rounded-lg shadow-lg">
+            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/6c6adfa4c4aa41858b800294a8bfe93a~tplv-a9rns2rl98-image.image?rcl=202511141447386518DAA332A39BF03EDD&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765694880&x-signature=0HPsTkQmXH5uFZrJliYRBptTRpI%3D" 
+                 alt="音乐之旅" 
+                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2">音乐之旅</h3>
+                <p class="text-text-secondary">2024专辑合集</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="group relative overflow-hidden rounded-lg shadow-lg">
+            <img src="https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/5e85aeaebb3f460fb5d1190d63cdbb92~tplv-a9rns2rl98-image.image?rcl=202511141447386518DAA332A39BF03EDD&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765694896&x-signature=PiYURvLachzSch167989dKgO4jk%3D" 
+                 alt="录音室" 
+                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2">录音室</h3>
+                <p class="text-text-secondary">专辑录制过程</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="group relative overflow-hidden rounded-lg shadow-lg">
+            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/5cf565104ad74a1dabe481faa1be1d7c~tplv-a9rns2rl98-image.image?rcl=202511141447386518DAA332A39BF03EDD&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765694896&x-signature=hwfBm2lMIqb5qvJoaZy%2BJX6jPqQ%3D" 
+                 alt="演唱会现场" 
+                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2">演唱会现场</h3>
+                <p class="text-text-secondary">与粉丝互动</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="group relative overflow-hidden rounded-lg shadow-lg">
+            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/c6972e37110043ada8da85c1a6d92351~tplv-a9rns2rl98-image.image?rcl=202511141447386518DAA332A39BF03EDD&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765694896&x-signature=vrArXJo1QVZBZxmb0e3K95RnSSk%3D" 
+                 alt="歌词页" 
+                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2">歌词页设计</h3>
+                <p class="text-text-secondary">专辑内页设计</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="group relative overflow-hidden rounded-lg shadow-lg">
+            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/493eb07ef5ee449fa283889710aa9b17~tplv-a9rns2rl98-image.image?rcl=202511141447386518DAA332A39BF03EDD&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765694895&x-signature=a5JDGZ2tIOdwaqw0aaRZZLyAQ5Y%3D" 
+                 alt="歌词页设计" 
+                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2">歌词页设计</h3>
+                <p class="text-text-secondary">专辑内页设计</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="group relative overflow-hidden rounded-lg shadow-lg">
+            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/9a4a44c66429403698340ea491f36d0b~tplv-a9rns2rl98-image.image?rcl=202511141447386518DAA332A39BF03EDD&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765694878&x-signature=vE85aZK0GuVI9MbrLcnQ9PTj0yI%3D" 
+                 alt="专辑封面" 
+                 class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2">专辑封面</h3>
+                <p class="text-text-secondary">星轨 - 林深</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark-light py-8 px-6">
+    <div class="container mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center space-x-2 mb-4 md:mb-0">
+          <i class="fa fa-music text-primary text-2xl"></i>
+          <h2 class="text-xl font-bold">花路·珍重</h2>
+        </div>
+        <div class="flex space-x-6">
+          <a href="#" class="text-text-secondary hover:text-primary transition-colors">
+            <i class="fa fa-spotify text-xl"></i>
+          </a>
+          <a href="#" class="text-text-secondary hover:text-primary transition-colors">
+            <i class="fa fa-apple text-xl"></i>
+          </a>
+          <a href="#" class="text-text-secondary hover:text-primary transition-colors">
+            <i class="fa fa-youtube-play text-xl"></i>
+          </a>
+          <a href="#" class="text-text-secondary hover:text-primary transition-colors">
+            <i class="fa fa-instagram text-xl"></i>
+          </a>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-6 pt-6 text-center text-text-secondary text-sm">
+        <p>&copy; 2025 花路·珍重 - 音乐专辑. 保留所有权利.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // 模拟数据
+    const tracks = [
+      {
+        id: 0,
+        title: "序曲 預約我和你",
+        artist: "蔡增仲",
+        duration: "01:30",
+        cover: "https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/16c91fa16fd04a7985078233af2dc8a2.png~tplv-a9rns2rl98-24:720:720.png?rcl=202511141555407A9CF5CAE63CAF0D0221&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763711741&x-signature=RpmCzvhTWNSDyn9uMaIE6mOkbms%3D",
+        lyrics: [
+          "序曲 預約我和你",
+          "這首歌沒有歌詞"
+        ]
+      },
+      {
+        id: 1,
+        title: "如夢如煙",
+        artist: "蔡增仲",
+        duration: "04:20",
+        cover: "https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/54321136b3fa4b14976eb7a600072249.png~tplv-a9rns2rl98-24:720:720.png?rcl=202511141600347AAD324B6BBD94211A17&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763712035&x-signature=fQ4bM28ebzOGt7%2BRbxdc2F1INO8%3D",
+        lyrics: [
+          "人生如夢夢如煙 歡笑悲傷留不住",
+          "春夏秋冬來來又去去 往事誰嘆息",
+          "",
+          "人生如夢夢如煙 日子一天天過下去",
+          "管它愛情來來又去去 留戀又何必",
+          "",
+          "啊～淚由它流 心由它碎",
+          "啊～淚由它流 人由它去",
+          "啊～淚由它流 愛會再來",
+          "啊～淚由它流 夢會留住",
+          "",
+          "人生如夢夢如煙 酸甜苦辣無所謂",
+          "人生不過來來又去去 笑笑別在意",
+          "",
+          "人生如夢夢如煙 半睡半醒似幻似真",
+          "夢裡夢外來來又去去 去去又來來",
+          "",
+          "啊～淚由它流 心由它碎",
+          "啊～淚由它流 人由它去",
+          "啊～淚由它流 愛會再來",
+          "啊～淚由它流 夢會留住",
+          "",
+          "人生如夢夢如煙 夢如煙"
+        ]
+      },
+      {
+        id: 2,
+        title: "難忘的一天",
+        artist: "蔡增仲",
+        duration: "03:45",
+        cover: "https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/a0a2aee2d8b843dcae8e68aab5b8dbdc.png~tplv-a9rns2rl98-24:720:720.png?rcl=20251114160716668DBE48EE9E90F9E25D&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763712436&x-signature=F0VhWARNesHIXItoNVnnn8h9at4%3D",
+        lyrics: [
+          "不知你從哪裡來",
+          "也不知到哪裡去",
+          "我們偶然相識",
+          "就從這天起",
+          "",
+          "不知你為誰而來",
+          "也不知幾時歸去",
+          "我們一見如故",
+          "陌生變知己",
+          "",
+          "流水一樣的情愫",
+          "純潔的象朵漣漪",
+          "金石一樣的愛心",
+          "讓它深深埋在心裡",
+          "這難忘的一天",
+          "這難忘的一天",
+          "值得我們一生留戀回憶",
+          "",
+          "不知你從哪裡來",
+          "也不知到哪裡去",
+          "我們偶然相識",
+          "就從這天起",
+          "",
+          "不知你為誰而來",
+          "也不知幾時歸去",
+          "我們一見如故",
+          "陌生變知己",
+          "",
+          "流水一樣的情愫",
+          "純潔的象朵漣漪",
+          "金石一樣的愛心",
+          "讓它深深埋在心裡",
+          "這難忘的一天",
+          "這難忘的一天",
+          "值得我們一生留戀回憶"
+        ]
+      },
+      {
+        id: 3,
+        title: "愛與哀愁",
+        artist: "蔡增仲",
+        duration: "04:30",
+        cover: "https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/127067d803a1466f8a53298147131c51.png~tplv-a9rns2rl98-24:720:720.png?rcl=20251114160913AFEF09A4E08BA3EF5C22&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763712553&x-signature=%2Bc9QjrDoPgOg0OKCJTUhTzvDgmE%3D",
+        lyrics: [
+          "走在風雨中，我不曾回頭，只想讓自己習慣寂寞。",
+          "如果在夢中，沒有你，沒有我，能不能夠讓自己不再難過！",
+          "愛也不會是一種罪過，恨也不會是一種解脫；",
+          "愛與哀愁對我來說，像杯烈酒，美麗卻難以承受。",
+          "點一根煙喝一杯酒，能醉多久？",
+          "醒來後依然是我！",
+          "",
+          "走在風雨中，我不曾回頭，只想讓自己習慣寂寞。",
+          "如果在夢中，沒有你，沒有我，能不能夠讓自己不再難過！",
+          "愛也不會是一種罪過，恨也不會是一種解脫，啊~~啊~~！",
+          "愛與哀愁對我來說，像杯烈酒，美麗卻難以承受，喔~~！",
+          "點一根煙喝一杯酒，能醉多久？",
+          "醒來後依然是我！",
+          "",
+          "愛與哀愁對我來說，像杯烈酒，美麗卻難以承受，喔~~！",
+          "點一根煙喝一杯酒，能醉多久？",
+          "醒來後依然是我！",
+          "",
+          "走在風雨中，我不想回頭，能不能夠讓自己不再難過。"
+        ]
+      },
+      {
+        id: 4,
+        title: "癡情月娘島",
+        artist: "蔡增仲",
+        duration: "03:50",
+        cover: "https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/55ce714cb9e844e28690783302d2ae98.png~tplv-a9rns2rl98-24:720:720.png?rcl=20251114161120ED4A86EEE8AF9BF3603C&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763712680&x-signature=c5HURBFJWB9AaoSHMuDVyKIoj8k%3D",
+        lyrics: [
+          "日出日落千年經過",
+          "暝暝長長雲伴月",
+          "美麗的情景親像畫",
+          "紅塵的人生情癡迷",
+          "真心付出抹當收回",
+          "千言萬語放心底",
+          "世間的冷暖變這多",
+          "彼時的詛咒敢是假",
+          "",
+          "孤孤單單嘆無伴",
+          "思思念念舉頭向天看",
+          "望月娘怨月娘咱的緣份薄",
+          "傷心目屎一直落",
+          "望月娘怨月娘無人通偎靠",
+          "癡情月娘島",
+          "",
+          "日出日落千年經過",
+          "暝暝長長雲伴月",
+          "美麗的情景親像畫",
+          "紅塵的人生情癡迷",
+          "真心付出抹當收回",
+          "千言萬語放心底",
+          "世間的冷暖變這多",
+          "彼時的詛咒敢是假",
+          "",
+          "孤孤單單嘆無伴",
+          "思思念念舉頭向天看",
+          "望月娘怨月娘咱的緣份薄",
+          "傷心目屎一直落",
+          "望月娘怨月娘無人通偎靠",
+          "癡情月娘島",
+          "",
+          "望月娘怨月娘咱的緣份薄",
+          "傷心目屎一直落",
+          "望月娘怨月娘無人通偎靠",
+          "癡情月娘島"
+        ]
+      },
+      {
+        id: 5,
+        title: "崇拜",
+        artist: "蔡增仲",
+        duration: "04:15",
+        cover: "https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/904b7288e11c4dc0b3b4ce5609be5e43.png~tplv-a9rns2rl98-24:720:720.png?rcl=202511141613550082B04CCD2AE0037390&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763712835&x-signature=fs4AYvqM%2BnhawqDAJEK3nTFywZ0%3D",
+        lyrics: [
+          "你的姿態 你的青睞",
+          "我存在在你的存在",
+          "你以為愛 就是被愛",
+          "你揮霍了我的崇拜",
+          "",
+          "我活了 我愛了 我都不管了",
+          "心愛到瘋了 恨到算了就好了",
+          "可能的 可以的 真的可惜了",
+          "幸福好不容易 怎麼你卻不敢了呢",
+          "我還以為我們能 不同於別人",
+          "我還以為不可能的 不會不可能",
+          "",
+          "你的姿態 你的青睞",
+          "我存在在你的存在",
+          "你以為愛 就是被愛",
+          "你揮霍了我的崇拜",
+          "",
+          "我活了 我愛了 我都不管了",
+          "心愛到瘋了 恨到算了就好了",
+          "可能的 可以的 真的可惜了",
+          "幸福好不容易 怎麼你卻不敢了呢",
+          "我還以為我們能 不同於別人",
+          "我還以為不可能的 不會不可能",
+          "",
+          "你的姿態 你的青睞",
+          "我存在在你的存在",
+          "你以為愛 就是被愛",
+          "你揮霍了我的崇拜",
+          "",
+          "風箏有風",
+          "海豚有海",
+          "我存在在我的存在",
+          "所以明白 所以離開",
+          "所以不再為愛而愛",
+          "自己存在在你之外"
+        ]
+      },
+      {
+        id: 6,
+        title: "可惜你不在",
+        artist: "蔡增仲",
+        duration: "04:05",
+        cover: "https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/5674b858fe354bdc8455e1e744c1f910.png~tplv-a9rns2rl98-24:720:720.png?rcl=2025111416161606C3915384BC6A0F7515&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763712977&x-signature=ajMqTQGK%2BSZ3SgMHr%2BhymjfOX2g%3D",
+        lyrics: [
+          "這一次 我要把長髮弄亂",
+          "反正天在冷 躲不進你的胸懷",
+          "推開了你的手淚流滿腮",
+          "不怕你嘲弄 不怕你冷漠 此刻只想耍賴噢",
+          "",
+          "這一夜 最好先說出Goodbye",
+          "戲拖的太久 傻女生也會學乖",
+          "喝不下這杯酒 苦澀來得好快",
+          "讓你去做夢 讓你去摸索 讓你與我無關",
+          "",
+          "我愛 我盼 只可惜你不在",
+          "我愛上的從來只是幻影 從不存在",
+          "",
+          "我愛 我盼 只可惜你不在",
+          "說好彼此要真心對待 說過的話變成了負債",
+          "不能向你討的愛 我怎能鎖在心上",
+          "",
+          "這一次 我要把長髮弄亂",
+          "反正天在冷 躲不進你的胸懷",
+          "推開了你的手淚流滿腮",
+          "不怕你嘲弄 不怕你冷漠 此刻只想耍賴噢",
+          "",
+          "這一夜 最好先說出Goodbye",
+          "戲拖的太久 傻女生也會學乖",
+          "喝不下這杯酒 苦澀來得好快",
+          "讓你去做夢 讓你去摸索 讓你與我無關",
+          "",
+          "我愛 我盼 只可惜你不在",
+          "我愛上的從來只是幻影 從不存在",
+          "",
+          "我愛 我盼 只可惜你不在",
+          "說好彼此要真心對待 說過的話變成了負債",
+          "不能向你討的愛 我怎能鎖在心上",
+          "說好彼此要真心對待 已經證明撞上了冰山",
+          "不能為你留的愛 我最好已經忘得痛快"
+        ]
+      },
+      {
+        id: 7,
+        title: "溫柔",
+        artist: "蔡增仲",
+        duration: "03:55",
+        cover: "https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/53418cd6cacc48b199d4c8a2f1f2a721.png~tplv-a9rns2rl98-24:720:720.png?rcl=2025111416175209A0A2341FCB92FD0546&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763713073&x-signature=KKD1vwZA6psAyaWsA9wRA3uhFWg%3D",
+        lyrics: [
+          "走在風中 今天陽光 突然好溫柔",
+          "天的溫柔 地的溫柔 像你抱著我",
+          "然後發現 你的改變 孤單的今後",
+          "如果冷 該怎麼渡過",
+          "",
+          "天邊風光 身邊的我 都不在你眼中",
+          "你的眼中 藏著什麼 我從來都不懂",
+          "沒有關係 你的世界 就讓你擁有",
+          "不打擾 是我的溫柔",
+          "",
+          "不知道 不明瞭 不想要 為什麼 我的心",
+          "明明是想靠近 卻孤單的黎明",
+          "不知道 不明瞭 不想要 為什麼 我的心",
+          "那愛情的綺麗 總是在孤單裡",
+          "再把我的最好的愛給你",
+          "",
+          "不知不覺 不情不願 又到巷子口",
+          "我沒有哭 也沒有笑 因為這是夢",
+          "沒有預兆 沒有理由 你真的有說過",
+          "如果有 就讓你自由",
+          "",
+          "不知道 不明瞭 不想要 為什麼 我的心",
+          "明明是想靠近 卻孤單的黎明",
+          "不知道 不明瞭 不想要 為什麼 我的心",
+          "那愛情的綺麗 總是在孤單裡",
+          "再把我的最好的愛給你",
+          "",
+          "不知不覺 不情不願 又到巷子口",
+          "我沒有哭 也沒有笑 因為這是夢",
+          "沒有預兆 沒有理由 你真的 都說過",
+          "如果有 就讓你自由 （自由....）",
+          "這是我的溫柔 （這是我的溫柔.這是我的溫柔.這是我的～溫柔....）"
+        ]
+      },
+      {
+        id: 8,
+        title: "荷塘月色",
+        artist: "蔡增仲",
+        duration: "04:25",
+        cover: "https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/1972988d855946618884e0ce1aafad42.png~tplv-a9rns2rl98-24:720:720.png?rcl=2025111416194830072F4D1B2CB5F404C4&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763713188&x-signature=ePhz8jhaxm8ZJ04xoTn%2FSW5CMuo%3D",
+        lyrics: [
+          "剪一段時光緩緩流淌",
+          "流進了月色中微微蕩漾",
+          "彈一首小荷淡淡的香",
+          "美麗的琴音就落在我身旁",
+          "",
+          "螢火蟲點亮夜的星光",
+          "誰為我添一件夢的衣裳",
+          "推開那扇心窗遠遠的望",
+          "誰採下那一朵昨日的憂傷",
+          "",
+          "我像只魚兒在你的荷塘",
+          "只為和你守候那皎白月光",
+          "游過了四季 荷花依然香",
+          "等你宛在水中央",
+          "",
+          "螢火蟲點亮夜的星光",
+          "誰為我添一件夢的衣裳",
+          "推開那扇心窗遠遠的望",
+          "誰採下那一朵昨日的憂傷",
+          "",
+          "我像只魚兒在你的荷塘",
+          "只為和你守候那皎白月光",
+          "游過了四季 荷花依然香",
+          "等你宛在水中央",
+          "",
+          "我們記憶中的荷塘",
+          "月色中在微微蕩漾",
+          "抬頭看月光縈繞落在我的身旁 喔喔",
+          "串串暗香點點星光",
+          "窗外淡淡花的芬芳",
+          "一句思念化作你的模樣",
+          "",
+          "我像只魚兒在你的荷塘",
+          "只為和你守候那皎白月光",
+          "游過了四季 荷花依然香",
+          "等你宛在水中央",
+          "",
+          "我像只魚兒在你的荷塘",
+          "只為和你守候那皎白月光",
+          "游過了四季 荷花依然香",
+          "等你宛在水中央",
+          "等你宛在水中央"
+        ]
+      },
+      {
+        id: 9,
+        title: "暝哪會這呢長",
+        artist: "蔡增仲",
+        duration: "04:40",
+        cover: "https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/4db34c95f5d5490699385c3056984e1c.png~tplv-a9rns2rl98-24:720:720.png?rcl=20251114162138D1DE511EC9D9FDFBDA1D&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763713299&x-signature=7sP%2Fp8Svb3QjrjDQ%2FzSwWl2c22I%3D",
+        lyrics: [
+          "今夜的枕頭 有咱昨暝的溫存",
+          "夢醒了後 你就惦惦離開阮",
+          "放阮一人 守著無聊的眠床",
+          "暝那會這呢長",
+          "",
+          "溫柔的雙手 掠過你的頷頸",
+          "想要挽回 你的放蕩的靈魂",
+          "忍受孤單 守著寂寞的眠床",
+          "路那會這呢遠",
+          "",
+          "明明知影 你只是泊岸的船",
+          "嘛是瞭解 咱只有露水的情份",
+          "過了今夜 又擱是無聊的青春",
+          "這敢不是 紅顏的命運",
+          "",
+          "",
+          "溫柔的雙手 掠過你的頷頸",
+          "想要挽回 你的放蕩的靈魂",
+          "忍受孤單 守著寂寞的眠床",
+          "路那會這呢遠",
+          "",
+          "明明知影 你只是泊岸的船",
+          "嘛是瞭解 咱只有露水的情份",
+          "過了今夜 又擱是無聊的青春",
+          "這敢不是 紅顏的命運",
+          "",
+          "明明知影 你只是泊岸的船",
+          "嘛是瞭解 咱只有露水的情份",
+          "過了今夜 又擱是無聊的青春",
+          "這敢不是 紅顏的命運"
+        ]
+      }
+    ];
+
+    // 当前播放状态
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+    let audioElement = null;
+    let progressInterval = null;
+    let lyricInterval = null;
+    let currentLyricIndex = 0;
+
+    // DOM 元素
+    const trackListElement = document.getElementById('track-list');
+    const playPauseButton = document.getElementById('play-pause');
+    const prevTrackButton = document.getElementById('prev-track');
+    const nextTrackButton = document.getElementById('next-track');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTimeDisplay = document.getElementById('current-time');
+    const totalTimeDisplay = document.getElementById('total-time');
+    const currentTrackTitle = document.getElementById('current-track-title');
+    const currentTrackArtist = document.getElementById('current-track-artist');
+    const currentTrackCover = document.getElementById('current-track-cover');
+    const volumeBar = document.getElementById('volume-bar');
+    const playAllButton = document.getElementById('play-all');
+    const lyricContent = document.getElementById('lyric-content');
+    const lyricTitle = document.getElementById('lyric-title');
+    const lyricArtist = document.getElementById('lyric-artist');
+    const lyricCover = document.getElementById('lyric-cover');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const closeMenuButton = document.getElementById('close-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+
+    // 初始化曲目列表
+    function initializeTrackList() {
+      trackListElement.innerHTML = '';
+      tracks.forEach((track, index) => {
+        const row = document.createElement('tr');
+        row.className = 'border-b border-gray-700 hover:bg-dark-light transition-colors cursor-pointer';
+        row.innerHTML = `
+          <td class="py-4 px-6">${index + 1}</td>
+          <td class="py-4 px-6">
+            <div class="flex items-center">
+              <button class="play-track mr-4 text-text-secondary hover:text-primary transition-colors" data-index="${index}">
+                <i class="fa fa-play"></i>
+              </button>
+              <span>${track.title}</span>
+            </div>
+          </td>
+          <td class="py-4 px-6">${track.artist}</td>
+          <td class="py-4 px-6 text-right">${track.duration}</td>
+          <td class="py-4 px-6 text-center">
+            <label class="upload-audio-btn cursor-pointer text-primary hover:text-secondary transition-colors" data-index="${index}">
+              <i class="fa fa-upload"></i>
+              <input type="file" class="hidden" accept="audio/*" data-index="${index}">
+            </label>
+          </td>
+        `;
+        trackListElement.appendChild(row);
+
+        // 添加点击事件
+        row.addEventListener('click', (e) => {
+          // 如果点击的是上传按钮区域，则不播放歌曲
+          if (!e.target.closest('.upload-audio-btn')) {
+            playTrack(index);
+          }
+        });
+      });
+      
+      // 添加文件上传事件监听
+      document.querySelectorAll('.upload-audio-btn input[type="file"]').forEach(input => {
+        input.addEventListener('change', handleAudioUpload);
+      });
+    }
+    
+    // 处理音频上传
+    function handleAudioUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const trackIndex = parseInt(e.target.dataset.index);
+      const track = tracks[trackIndex];
+      
+      // 创建音频URL
+      const audioUrl = URL.createObjectURL(file);
+      
+      // 存储音频URL到曲目对象
+      track.audio = audioUrl;
+      
+      // 显示上传成功提示
+      showNotification(`"${track.title}" 音频上传成功！`);
+      
+      // 如果上传的是当前播放的曲目，更新音频源
+      if (trackIndex === currentTrackIndex && audioElement) {
+        audioElement.src = audioUrl;
+        
+        // 如果正在播放，则继续播放
+        if (isPlaying) {
+          audioElement.play();
+        }
+      }
+    }
+    
+    // 显示通知
+    function showNotification(message) {
+      // 创建通知元素
+      const notification = document.createElement('div');
+      notification.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 transform transition-transform duration-300 translate-y-10 opacity-0';
+      notification.textContent = message;
+      
+      // 添加到页面
+      document.body.appendChild(notification);
+      
+      // 显示通知
+      setTimeout(() => {
+        notification.classList.remove('translate-y-10', 'opacity-0');
+      }, 10);
+      
+      // 3秒后隐藏通知
+      setTimeout(() => {
+        notification.classList.add('translate-y-10', 'opacity-0');
+        
+        // 动画结束后移除元素
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    // 初始化音频元素
+    function initializeAudio() {
+      audioElement = new Audio();
+      
+      // 获取当前曲目
+      const currentTrack = tracks[currentTrackIndex];
+      
+      // 优先使用用户上传的音频文件
+      if (currentTrack.audio) {
+        audioElement.src = currentTrack.audio;
+      } else {
+        audioElement.src = `audio/${currentTrack.title}.mp3`;
+      }
+      
+      audioElement.addEventListener('ended', () => {
+        if (currentTrackIndex < tracks.length - 1) {
+          playTrack(currentTrackIndex + 1);
+        } else {
+          stopPlayback();
+        }
+      });
+      
+      audioElement.addEventListener('loadedmetadata', () => {
+        totalTimeDisplay.textContent = formatTime(audioElement.duration);
+      });
+    }
+
+    // 播放曲目
+    function playTrack(index) {
+      // 如果点击的是当前播放的曲目，则切换播放/暂停状态
+      if (index === currentTrackIndex && isPlaying) {
+        togglePlayPause();
+        return;
+      }
+      
+      // 更新当前曲目索引
+      currentTrackIndex = index;
+      
+      // 获取当前曲目
+      const currentTrack = tracks[currentTrackIndex];
+      
+      // 更新音频源
+      if (audioElement) {
+        // 优先使用用户上传的音频文件
+        if (currentTrack.audio) {
+          audioElement.src = currentTrack.audio;
+        } else {
+          audioElement.src = `audio/${currentTrack.title}.mp3`;
+        }
+      } else {
+        initializeAudio();
+      }
+      
+      // 更新UI
+      updateNowPlayingUI();
+      updateLyricsUI();
+      
+      // 开始播放
+      startPlayback();
+    }
+
+    // 开始播放
+    function startPlayback() {
+      if (!audioElement) {
+        initializeAudio();
+      }
+      
+      audioElement.play();
+      isPlaying = true;
+      
+      // 更新播放/暂停按钮
+      playPauseButton.innerHTML = '<i class="fa fa-pause text-white"></i>';
+      
+      // 开始进度条更新
+      startProgressUpdate();
+      
+      // 开始歌词更新
+      startLyricUpdate();
+      
+      // 更新曲目列表中的播放按钮
+      updateTrackListPlayButtons();
+    }
+
+    // 暂停播放
+    function pausePlayback() {
+      if (audioElement) {
+        audioElement.pause();
+        isPlaying = false;
+        
+        // 更新播放/暂停按钮
+        playPauseButton.innerHTML = '<i class="fa fa-play text-white"></i>';
+        
+        // 停止进度条更新
+        stopProgressUpdate();
+        
+        // 停止歌词更新
+        stopLyricUpdate();
+        
+        // 更新曲目列表中的播放按钮
+        updateTrackListPlayButtons();
+      }
+    }
+
+    // 停止播放
+    function stopPlayback() {
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        isPlaying = false;
+        
+        // 更新播放/暂停按钮
+        playPauseButton.innerHTML = '<i class="fa fa-play text-white"></i>';
+        
+        // 停止进度条更新
+        stopProgressUpdate();
+        
+        // 停止歌词更新
+        stopLyricUpdate();
+        
+        // 重置进度条
+        progressBar.style.width = '0%';
+        currentTimeDisplay.textContent = '00:00';
+        
+        // 更新曲目列表中的播放按钮
+        updateTrackListPlayButtons();
+      }
+    }
+
+    // 切换播放/暂停状态
+    function togglePlayPause() {
+      if (isPlaying) {
+        pausePlayback();
+      } else {
+        startPlayback();
+      }
+    }
+
+    // 播放上一首
+    function playPrevTrack() {
+      if (currentTrackIndex > 0) {
+        playTrack(currentTrackIndex - 1);
+      } else {
+        playTrack(tracks.length - 1); // 循环播放
+      }
+    }
+
+    // 播放下一首
+    function playNextTrack() {
+      if (currentTrackIndex < tracks.length - 1) {
+        playTrack(currentTrackIndex + 1);
+      } else {
+        playTrack(0); // 循环播放
+      }
+    }
+
+    // 开始进度条更新
+    function startProgressUpdate() {
+      stopProgressUpdate(); // 确保之前的定时器已停止
+      
+      progressInterval = setInterval(() => {
+        if (audioElement && !isNaN(audioElement.duration)) {
+          const progress = (audioElement.currentTime / audioElement.duration) * 100;
+          progressBar.style.width = `${progress}%`;
+          currentTimeDisplay.textContent = formatTime(audioElement.currentTime);
+        }
+      }, 1000);
+    }
+
+    // 停止进度条更新
+    function stopProgressUpdate() {
+      if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+      }
+    }
+
+    // 开始歌词更新
+    function startLyricUpdate() {
+      stopLyricUpdate(); // 确保之前的定时器已停止
+      
+      // 重置歌词索引
+      currentLyricIndex = 0;
+      
+      // 计算每句歌词的显示时间
+      const lyricDuration = audioElement.duration / tracks[currentTrackIndex].lyrics.length;
+      
+      lyricInterval = setInterval(() => {
+        if (currentLyricIndex < tracks[currentTrackIndex].lyrics.length - 1) {
+          currentLyricIndex++;
+          updateLyricsUI();
+        } else {
+          stopLyricUpdate();
+        }
+      }, lyricDuration * 1000);
+    }
+
+    // 停止歌词更新
+    function stopLyricUpdate() {
+      if (lyricInterval) {
+        clearInterval(lyricInterval);
+        lyricInterval = null;
+      }
+    }
+
+    // 更新当前播放UI
+    function updateNowPlayingUI() {
+      const currentTrack = tracks[currentTrackIndex];
+      
+      // 更新底部播放器
+      currentTrackTitle.textContent = currentTrack.title;
+      currentTrackArtist.textContent = currentTrack.artist;
+      currentTrackCover.innerHTML = `<img src="${currentTrack.cover}" alt="${currentTrack.title}" class="w-full h-full object-cover">`;
+      totalTimeDisplay.textContent = currentTrack.duration;
+    }
+
+    // 更新歌词UI
+    function updateLyricsUI() {
+      const currentTrack = tracks[currentTrackIndex];
+      
+      // 更新歌词区域
+      lyricTitle.textContent = currentTrack.title;
+      lyricArtist.textContent = currentTrack.artist;
+      lyricCover.innerHTML = `<img src="${currentTrack.cover}" alt="${currentTrack.title}" class="w-full h-auto object-cover">`;
+      
+      // 更新歌词内容
+      lyricContent.innerHTML = '';
+      const lyricContainer = document.createElement('div');
+      lyricContainer.className = 'text-center space-y-4 text-xl';
+      
+      currentTrack.lyrics.forEach((lyric, index) => {
+        const p = document.createElement('p');
+        p.textContent = lyric;
+        if (index === currentLyricIndex) {
+          p.classList.add('lyric-highlight');
+        }
+        lyricContainer.appendChild(p);
+      });
+      
+      lyricContent.appendChild(lyricContainer);
+      
+      // 滚动到当前歌词
+      const highlightElement = lyricContent.querySelector('.lyric-highlight');
+      if (highlightElement) {
+        highlightElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // 更新曲目列表中的播放按钮
+    function updateTrackListPlayButtons() {
+      const playButtons = document.querySelectorAll('.play-track');
+      
+      playButtons.forEach((button, index) => {
+        if (index === currentTrackIndex && isPlaying) {
+          button.innerHTML = '<i class="fa fa-pause"></i>';
+          button.classList.add('text-primary');
+          button.classList.remove('text-text-secondary');
+        } else {
+          button.innerHTML = '<i class="fa fa-play"></i>';
+          button.classList.remove('text-primary');
+          button.classList.add('text-text-secondary');
+        }
+      });
+    }
+
+    // 格式化时间
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = Math.floor(seconds % 60);
+      
+      return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+
+    // 初始化事件监听
+    function initializeEventListeners() {
+      // 播放/暂停按钮
+      playPauseButton.addEventListener('click', togglePlayPause);
+      
+      // 上一首/下一首按钮
+      prevTrackButton.addEventListener('click', playPrevTrack);
+      nextTrackButton.addEventListener('click', playNextTrack);
+      
+      // 播放全部按钮
+      playAllButton.addEventListener('click', () => playTrack(0));
+      
+      // 进度条点击
+      progressBar.parentElement.addEventListener('click', (e) => {
+        if (audioElement && !isNaN(audioElement.duration)) {
+          const rect = progressBar.parentElement.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const width = rect.width;
+          const progress = (x / width) * 100;
+          
+          audioElement.currentTime = (progress / 100) * audioElement.duration;
+          progressBar.style.width = `${progress}%`;
+        }
+      });
+      
+      // 音量条点击
+      volumeBar.parentElement.addEventListener('click', (e) => {
+        if (audioElement) {
+          const rect = volumeBar.parentElement.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const width = rect.width;
+          const volume = x / width;
+          
+          audioElement.volume = volume;
+          volumeBar.style.width = `${volume * 100}%`;
+        }
+      });
+      
+      // 移动端菜单
+      mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.remove('translate-x-full');
+      });
+      
+      closeMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+      });
+      
+      // 移动端菜单项点击
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('translate-x-full');
+        });
+      });
+      
+      // 曲目播放按钮
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('.play-track')) {
+          const button = e.target.closest('.play-track');
+          const index = parseInt(button.dataset.index);
+          playTrack(index);
+        }
+      });
+    }
+
+    // 初始化
+    function initialize() {
+      initializeTrackList();
+      initializeAudio();
+      initializeEventListeners();
+      updateNowPlayingUI();
+      updateLyricsUI();
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', initialize);
+  </script>
+</body>
+</html>
